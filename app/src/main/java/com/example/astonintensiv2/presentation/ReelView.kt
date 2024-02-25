@@ -45,7 +45,7 @@ class ReelView(context: Context) : View(context) {
                 centerY - radius,
                 centerX + radius,
                 centerY + radius,
-                startAngle + segmentAngle * index,
+                startAngle + segmentAngle * index + currentRotation,
                 segmentAngle
             )
             path.lineTo(centerX, centerY)
