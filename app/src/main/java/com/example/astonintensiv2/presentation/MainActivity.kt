@@ -33,14 +33,14 @@ class MainActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    reelView.changeSize(progress.toFloat())
+                    reelView.changeSize(progress)
                 }
 
             }
         )
 
         binding.btnReset.setOnClickListener {
-            Log.i("MainActivity", reelView.getCurrentSegment().toString())
+            Log.i("MainActivity", reelView.getCurrentSegment())
         }
     }
 }

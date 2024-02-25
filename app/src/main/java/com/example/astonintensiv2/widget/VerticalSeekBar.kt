@@ -10,7 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 
 class VerticalSeekBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    private var progress = 100
+    private var progress = 50
     private var max = 100
     private var min = 0
     private var onSeekBarChangeListener: OnSeekBarChangeListener? = null
