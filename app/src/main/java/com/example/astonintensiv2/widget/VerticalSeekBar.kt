@@ -10,22 +10,23 @@ import android.view.MotionEvent
 import android.view.View
 
 class VerticalSeekBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    private var progress = 50
+    private var progress = 100
     private var max = 100
+    private var min = 0
     private var onSeekBarChangeListener: OnSeekBarChangeListener? = null
 
-    private val linePaint = Paint()
-    private val thumbPaintOuter = Paint()
-    private val thumbPaintInner = Paint()
-
-    init {
-        linePaint.color = Color.MAGENTA
-        linePaint.strokeWidth = 8f
-        thumbPaintOuter.color = Color.RED
-        thumbPaintOuter.strokeWidth = 6f
-        thumbPaintOuter.style = Paint.Style.STROKE
-        thumbPaintInner.color = Color.MAGENTA
-        thumbPaintInner.style = Paint.Style.FILL
+    private val linePaint = Paint().apply {
+        color = Color.MAGENTA
+        strokeWidth = 8f
+    }
+    private val thumbPaintOuter = Paint().apply {
+        color = Color.RED
+        strokeWidth = 6f
+        style = Paint.Style.STROKE
+    }
+    private val thumbPaintInner = Paint().apply {
+        color = Color.MAGENTA
+        Paint.Style.FILL
     }
 
     interface OnSeekBarChangeListener {
@@ -40,8 +41,16 @@ class VerticalSeekBar(context: Context, attrs: AttributeSet) : View(context, att
         this.max = max
     }
 
+    fun setMin(min: Int) {
+        this.min = min
+    }
+
+    fun getProgress(): Int {
+        return progress
+    }
+
     private fun setProgress(progress: Int) {
-        if (progress in 0..max) {
+        if (progress in min..max) {
             this.progress = progress
             invalidate()
         }
@@ -52,7 +61,8 @@ class VerticalSeekBar(context: Context, attrs: AttributeSet) : View(context, att
         val width = width.toFloat()
         val height = height.toFloat()
         val thumbSize = 30f
-        val thumbY = (height - thumbSize * 2) * (1 - progress.toFloat() / max) + thumbSize
+        val thumbY = (height - (thumbSize * 2 + thumbPaintOuter.strokeWidth)) *
+                (1 - progress.toFloat() / max) + (thumbSize + thumbPaintOuter.strokeWidth / 2)
 
         canvas.drawLine(width / 2, 0f, width / 2, height, linePaint)
         canvas.drawCircle(

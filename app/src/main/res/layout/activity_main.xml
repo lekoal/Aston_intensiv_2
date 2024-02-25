@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".MainActivity">
+    tools:context=".presentation.MainActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image_field"
@@ -44,7 +44,21 @@
         app:layout_constraintBottom_toTopOf="@id/barrier_two"
         app:layout_constraintEnd_toStartOf="@id/reel_scale"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier_one" />
+        app:layout_constraintTop_toBottomOf="@id/barrier_one">
+
+        <FrameLayout
+            android:id="@+id/reel_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:src="@drawable/arrow_down" />
+
+    </FrameLayout>
 
     <com.example.astonintensiv2.widget.VerticalSeekBar
         android:id="@+id/reel_scale"
