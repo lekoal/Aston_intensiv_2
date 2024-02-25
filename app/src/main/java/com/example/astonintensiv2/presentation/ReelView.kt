@@ -19,12 +19,12 @@ class ReelView(context: Context) : View(context) {
     }
     private val path = Path()
     private var currentRotation = 0f
+    private var startAngle = -117f + currentRotation
     private var progress = 50
 
     private val segments = ReelSegments.get()
 
     private var animator: ObjectAnimator? = null
-    private var scaleAnimator: ObjectAnimator? = null
 
     private fun getColorById(colorId: Int): Int {
         return ContextCompat.getColor(context, colorId)
@@ -35,7 +35,6 @@ class ReelView(context: Context) : View(context) {
         val centerY = height / 2f
         val radius = (width / 2).toFloat() * (progress / 100f)
         val segmentAngle = 360f / segments.size
-        val startAngle = -117f
 
         segments.forEachIndexed { index, segment ->
             paint.color = getColorById(segment.color)
@@ -45,7 +44,7 @@ class ReelView(context: Context) : View(context) {
                 centerY - radius,
                 centerX + radius,
                 centerY + radius,
-                startAngle + segmentAngle * index + currentRotation,
+                startAngle + segmentAngle * index,
                 segmentAngle
             )
             path.lineTo(centerX, centerY)
@@ -73,7 +72,6 @@ class ReelView(context: Context) : View(context) {
     }
 
     fun changeSize(progress: Int) {
-        scaleAnimator?.cancel()
         this.progress = progress
         invalidate()
     }
