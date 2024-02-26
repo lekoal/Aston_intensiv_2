@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private var imageUrl = ""
     private var currentRotation = 0f
     private var currentProgress = 50
+    private var isRotated = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -61,11 +62,13 @@ class MainActivity : AppCompatActivity() {
             currentRotation = savedInstanceState.getFloat("rotation")
             customViewText = savedInstanceState.getString("text", "")
             imageUrl = savedInstanceState.getString("url", "")
+            isRotated = savedInstanceState.getBoolean("isRotated")
         }
     }
 
     private fun getCurrentSegment() {
         startButtonDisabler(isEnable = true)
+        isRotated = false
         binding.reelView.isClickable = true
         val currentSegment = reelView.getCurrentSegment()
         if (currentSegment != null) {
@@ -81,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         binding.reelView.isClickable = false
         startButtonDisabler(isEnable = false)
         fieldsClear()
+        isRotated = true
         reelView.startRotating {
             getCurrentSegment()
         }
@@ -115,6 +119,7 @@ class MainActivity : AppCompatActivity() {
         outState.putInt("progress", binding.reelScale.getProgress())
         outState.putString("text", customViewText)
         outState.putString("url", imageUrl)
+        outState.putBoolean("isRotated", isRotated)
         super.onSaveInstanceState(outState)
     }
 
@@ -124,6 +129,9 @@ class MainActivity : AppCompatActivity() {
         reelView.setCurrentRotation(currentRotation)
         reelView.changeSize(currentProgress)
         textCustomView.setText(customViewText)
+        if (isRotated) {
+            reelStarting()
+        }
         setImage(imageUrl)
     }
 
