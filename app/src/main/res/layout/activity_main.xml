@@ -7,7 +7,7 @@
     android:padding="10dp"
     tools:context=".presentation.MainActivity">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image_field"
         android:layout_width="0dp"
         android:layout_height="0dp"
