@@ -3,6 +3,7 @@ package com.example.astonintensiv2.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
+import com.example.astonintensiv2.R
 import com.example.astonintensiv2.databinding.ActivityMainBinding
 import com.example.astonintensiv2.model.ReelSegment
 import com.example.astonintensiv2.widget.VerticalSeekBar
@@ -105,6 +106,7 @@ class MainActivity : AppCompatActivity() {
         binding.imageField.load(url) {
             crossfade(true)
             crossfade(100)
+            placeholder(R.drawable.placeholder)
         }
     }
 
