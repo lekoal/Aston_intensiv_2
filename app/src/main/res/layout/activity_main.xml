@@ -7,7 +7,7 @@
     android:padding="10dp"
     tools:context=".presentation.MainActivity">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/image_field"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -15,7 +15,8 @@
         app:layout_constraintBottom_toTopOf="@id/barrier_one"
         app:layout_constraintEnd_toStartOf="@id/text_field"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/some_image_description" />
 
     <FrameLayout
         android:id="@+id/text_field"

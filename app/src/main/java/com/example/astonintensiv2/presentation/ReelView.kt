@@ -11,6 +11,7 @@ import android.os.Looper
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
+import com.example.astonintensiv2.model.ReelSegment
 import com.example.astonintensiv2.model.ReelSegments
 
 class ReelView(context: Context) : View(context) {
@@ -53,7 +54,7 @@ class ReelView(context: Context) : View(context) {
         }
     }
 
-    fun startRotating() {
+    fun startRotating(onResult: () -> Unit) {
         val randomDelay = (3000..6000).random().toLong()
         val handler = Handler(Looper.getMainLooper())
         animator = ObjectAnimator
@@ -68,6 +69,7 @@ class ReelView(context: Context) : View(context) {
         handler.postDelayed({
             animator?.cancel()
             currentRotation = rotation % 360f
+            onResult()
         }, randomDelay)
     }
 
@@ -76,13 +78,13 @@ class ReelView(context: Context) : View(context) {
         invalidate()
     }
 
-    fun getCurrentSegment(): String {
+    fun getCurrentSegment(): ReelSegment? {
         val segmentAngle = 360f / segments.size
         val normalizedRotation = (currentRotation + 360f) % 360f
         var topSegmentIndex = ((segments.size - ((normalizedRotation + 25) / segmentAngle).toInt()))
         if (topSegmentIndex >= segments.size) {
             topSegmentIndex = 0
         }
-        return segments.getOrNull(topSegmentIndex)?.nameColor ?: "null"
+        return segments.getOrNull(topSegmentIndex)
     }
 }

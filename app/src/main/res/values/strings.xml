@@ -2,4 +2,5 @@
     <string name="app_name">AstonIntensivTwo</string>
     <string name="btn_start_title">Пуск</string>
     <string name="btn_reset_title">Сброс</string>
+    <string name="some_image_description">Some image</string>
 </resources>
