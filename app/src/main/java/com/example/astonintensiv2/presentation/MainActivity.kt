@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.example.astonintensiv2.databinding.ActivityMainBinding
+import com.example.astonintensiv2.model.ReelSegment
 import com.example.astonintensiv2.widget.VerticalSeekBar
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding.textField.addView(textCustomView)
 
         binding.btnStart.setOnClickListener {
+            startButtonDisabler(isEnable = false)
             fieldsClear()
             reelView.startRotating {
                 getCurrentSegment()
@@ -51,18 +53,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getCurrentSegment() {
+        startButtonDisabler(isEnable = true)
         val currentSegment = reelView.getCurrentSegment()
         if (currentSegment != null) {
-            when (currentSegment.action) {
-                "Text" -> {
-                    textCustomView.setText(currentSegment.content)
-                }
+            segmentAction(currentSegment)
+        }
+    }
 
-                "Image" -> {
-                    binding.imageField.load(currentSegment.content) {
-                        crossfade(true)
-                        crossfade(100)
-                    }
+    private fun startButtonDisabler(isEnable: Boolean) {
+        binding.btnStart.isEnabled = isEnable
+    }
+    private fun segmentAction(segment: ReelSegment) {
+        when (segment.action) {
+            "Text" -> {
+                textCustomView.setText(segment.content)
+            }
+
+            "Image" -> {
+                binding.imageField.load(segment.content) {
+                    crossfade(true)
+                    crossfade(100)
                 }
             }
         }
