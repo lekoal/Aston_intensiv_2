@@ -87,4 +87,12 @@ class ReelView(context: Context) : View(context) {
         }
         return segments.getOrNull(topSegmentIndex)
     }
+
+    fun getCurrentRotation(): Float = currentRotation
+
+    fun setCurrentRotation(rotation: Float) {
+        currentRotation = rotation
+        this.rotation = currentRotation
+        invalidate()
+    }
 }

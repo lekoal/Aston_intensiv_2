@@ -11,6 +11,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var reelView: ReelView
     private lateinit var binding: ActivityMainBinding
     private lateinit var textCustomView: TextCustomView
+    private var customViewText = ""
+    private var imageUrl = ""
+    private var currentRotation = 0f
+    private var currentProgress = 50
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -27,11 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding.textField.addView(textCustomView)
 
         binding.btnStart.setOnClickListener {
-            startButtonDisabler(isEnable = false)
-            fieldsClear()
-            reelView.startRotating {
-                getCurrentSegment()
-            }
+            reelStarting()
         }
 
         binding.reelScale.setOnSeekBarChangeListener(
@@ -50,10 +50,22 @@ class MainActivity : AppCompatActivity() {
         binding.btnReset.setOnClickListener {
             fieldsClear()
         }
+
+        binding.reelView.setOnClickListener {
+            reelStarting()
+        }
+
+        if (savedInstanceState != null) {
+            currentProgress = savedInstanceState.getInt("progress")
+            currentRotation = savedInstanceState.getFloat("rotation")
+            customViewText = savedInstanceState.getString("text", "")
+            imageUrl = savedInstanceState.getString("url", "")
+        }
     }
 
     private fun getCurrentSegment() {
         startButtonDisabler(isEnable = true)
+        binding.reelView.isClickable = true
         val currentSegment = reelView.getCurrentSegment()
         if (currentSegment != null) {
             segmentAction(currentSegment)
@@ -63,23 +75,60 @@ class MainActivity : AppCompatActivity() {
     private fun startButtonDisabler(isEnable: Boolean) {
         binding.btnStart.isEnabled = isEnable
     }
+
+    private fun reelStarting() {
+        binding.reelView.isClickable = false
+        startButtonDisabler(isEnable = false)
+        fieldsClear()
+        reelView.startRotating {
+            getCurrentSegment()
+        }
+    }
+
     private fun segmentAction(segment: ReelSegment) {
         when (segment.action) {
             "Text" -> {
-                textCustomView.setText(segment.content)
+                imageUrl = ""
+                customViewText = segment.content
+                textCustomView.setText(customViewText)
             }
 
             "Image" -> {
-                binding.imageField.load(segment.content) {
-                    crossfade(true)
-                    crossfade(100)
-                }
+                customViewText = ""
+                imageUrl = segment.content
+                setImage(imageUrl)
             }
         }
+    }
+
+    private fun setImage(url: String) {
+        binding.imageField.load(url) {
+            crossfade(true)
+            crossfade(100)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putFloat("rotation", reelView.getCurrentRotation())
+        outState.putInt("progress", binding.reelScale.getProgress())
+        outState.putString("text", customViewText)
+        outState.putString("url", imageUrl)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        binding.reelScale.setProgress(currentProgress)
+        reelView.setCurrentRotation(currentRotation)
+        reelView.changeSize(currentProgress)
+        textCustomView.setText(customViewText)
+        setImage(imageUrl)
     }
 
     private fun fieldsClear() {
         binding.imageField.load(null)
         textCustomView.setText("")
+        customViewText = ""
+        imageUrl = ""
     }
 }

@@ -37,19 +37,11 @@ class VerticalSeekBar(context: Context, attrs: AttributeSet) : View(context, att
         onSeekBarChangeListener = listener
     }
 
-    fun setMax(max: Int) {
-        this.max = max
-    }
-
-    fun setMin(min: Int) {
-        this.min = min
-    }
-
     fun getProgress(): Int {
         return progress
     }
 
-    private fun setProgress(progress: Int) {
+    fun setProgress(progress: Int) {
         if (progress in min..max) {
             this.progress = progress
             invalidate()
