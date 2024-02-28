@@ -20,11 +20,10 @@ class ReelView(context: Context) : View(context) {
     }
     private val path = Path()
     private var currentRotation = 0f
-    private var startAngle = -117f + currentRotation
     private var progress = 50
-
     private val segments = ReelSegments.get()
-
+    private val segmentAngle = 360f / segments.size
+    private var startAngle = -90f - segmentAngle / 2 + currentRotation
     private var animator: ObjectAnimator? = null
 
     private fun getColorById(colorId: Int): Int {
@@ -35,7 +34,6 @@ class ReelView(context: Context) : View(context) {
         val centerX = width / 2f
         val centerY = height / 2f
         val radius = (width / 2).toFloat() * (progress / 100f)
-        val segmentAngle = 360f / segments.size
 
         segments.forEachIndexed { index, segment ->
             paint.color = getColorById(segment.color)
